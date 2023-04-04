@@ -1,0 +1,53 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Reclamo {
+  id: Float!
+  titulo: String!
+  detalle: String!
+  problema: String!
+  resuelto: Boolean!
+}
+
+type User {
+  id: String!
+  name: String!
+}
+
+type Query {
+  reclamos: [Reclamo!]!
+  reclamo(id: Float!): Reclamo!
+  users: [User!]!
+  user(id: Int!): User!
+}
+
+type Mutation {
+  createReclamo(createReclamoInput: createReclamoInput!): Reclamo!
+  updateReclamo(updateReclamoInput: updateReclamoInput!): Reclamo!
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
+}
+
+input createReclamoInput {
+  titulo: String!
+  detalle: String!
+  problema: String!
+}
+
+input updateReclamoInput {
+  id: Float!
+  titulo: String
+  detalle: String
+  problema: String
+  resuelto: Boolean
+}
+
+input CreateUserInput {
+  id: ID!
+}
+
+input UpdateUserInput {
+  id: ID!
+}
