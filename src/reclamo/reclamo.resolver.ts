@@ -1,6 +1,6 @@
 import { Resolver, Query, Args, Int, Mutation, ID } from '@nestjs/graphql';
-import { createReclamoInput } from './dto / inputs/create.reclamo-input';
-import { updateReclamoInput } from './dto / inputs/update.reclamo-input';
+import { createReclamoInput } from './dto/create.reclamo-input';
+import { updateReclamoInput } from './dto/update.reclamo-input';
 import { Reclamo } from './entity/reclamo.entity';
 import { ReclamoService } from './reclamo.service';
 
@@ -44,10 +44,10 @@ export class ReclamoResolver {
         return this.reclamoService.update(updateReclamoInput.id, updateReclamoInput);
     }
 
-    /* @Mutation(()=> Boolean, {name: 'deleteReclamo'})
+    @Mutation(()=> Reclamo, {name: 'deleteReclamo'})
     deleteReclamo(
         @Args ('id', {type: ()=> Int}) id: number
     ) {
         return this.reclamoService.delete(id);
-    } */
+    }
 }

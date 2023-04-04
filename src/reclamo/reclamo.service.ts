@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { createReclamoInput } from './dto / inputs/create.reclamo-input';
-import { updateReclamoInput } from './dto / inputs/update.reclamo-input';
+import { createReclamoInput } from './dto/create.reclamo-input';
+import { updateReclamoInput } from './dto/update.reclamo-input';
 import { Reclamo } from './entity/reclamo.entity';
 
 @Injectable()
@@ -61,12 +61,13 @@ export class ReclamoService {
 
     }
 
-    /* delete( id: number) : Boolean {
-        const reclamo = this.findOne( id )
+    async delete( id: number): Promise<Reclamo> {
+        const reclamo = await this.findOne( id )
 
-        this.reclamos = this.reclamos.filter( reclamo => reclamo.id !== id );
+        await this.reclamosRepository.remove(reclamo);
 
-        return true;
-    } */
+        return {...reclamo, id};
+    }
 
 }
+ 

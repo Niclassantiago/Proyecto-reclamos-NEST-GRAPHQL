@@ -16,9 +16,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
     GraphQLModule.forRoot<ApolloDriverConfig>({
     driver: ApolloDriver,
-    //playground: false,
+    playground: false,
     autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-    //plugins: [ApolloServerPluginLandingPageLocalDefault()],
+    plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }), 
     ReclamoModule, UsersModule,
 

@@ -25,6 +25,7 @@ type Query {
 type Mutation {
   createReclamo(createReclamoInput: createReclamoInput!): Reclamo!
   updateReclamo(updateReclamoInput: updateReclamoInput!): Reclamo!
+  deleteReclamo(id: Int!): Reclamo!
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
