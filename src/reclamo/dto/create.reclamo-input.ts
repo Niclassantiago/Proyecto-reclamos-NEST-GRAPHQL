@@ -1,5 +1,5 @@
 import { Field, InputType } from "@nestjs/graphql";
-import { IsNotEmpty, IsString, MaxLength } from "class-validator";
+import { IsDateString, IsNotEmpty, IsNumber, IsString, MaxLength } from "class-validator";
 
 @InputType()
 export class createReclamoInput {
@@ -10,10 +10,25 @@ export class createReclamoInput {
     @MaxLength(20)
     title: string;
 
+    /* @Field( ()=> String)
+    @IsString()
+    @IsNotEmpty()
+    detail: string; */
+
     @Field( ()=> String)
     @IsString()
     @IsNotEmpty()
-    detail: string;
+    purchaseDate: string;
+
+    @Field( ()=> Number)
+    @IsNumber()
+    @IsNotEmpty()
+    purchaseId: Number;
+
+    @Field( ()=> String)
+    @IsString()
+    @IsNotEmpty()
+    productCode: string;
 
     @Field( ()=> String)
     @IsString()

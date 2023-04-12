@@ -8,6 +8,7 @@ import { ValidRolesArgs } from 'src/auth/dto/inputs/args/roles.arg';
 import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
+import { PaginationArgs } from 'src/common/dto/args/pagination.args';
 
 @Resolver(() => User)
 @UseGuards( JwtAuthGuard )
@@ -17,10 +18,9 @@ export class UsersResolver {
   @Query(() => [User], { name: 'users' })
   findAll(
     @Args() validRoles: ValidRolesArgs,
+    @Args() paginationArgs: PaginationArgs,
     @CurrentUser([ValidRoles.admin]) user: User
   ):Promise<User[]> {
-
-    console.log( user )
 
     return this.usersService.findAll( validRoles.roles );
   }

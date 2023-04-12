@@ -4,6 +4,7 @@ import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { ValidRolesArgs } from 'src/auth/dto/inputs/args/roles.arg';
 import { ValidRoles } from 'src/auth/enums/valid-roles.enum';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { PaginationArgs } from 'src/common/dto/args/pagination.args';
 import { User } from 'src/users/entities/user.entity';
 import { createReclamoInput } from './dto/create.reclamo-input';
 import { updateReclamoInput } from './dto/update.reclamo-input';
@@ -28,12 +29,11 @@ export class ReclamoResolver {
     @Query(() => [Reclamo], { name: 'reclamos' })
   findAll(
     @Args() validRoles: ValidRolesArgs,
+    @Args() paginationArgs: PaginationArgs,
     @CurrentUser([ValidRoles.admin]) reclamo: Reclamo
   ):Promise<Reclamo[]> {
 
-    console.log( reclamo )
-
-    return this.reclamoService.findAll( validRoles.roles );
+    return this.reclamoService.findAll( validRoles.roles, paginationArgs );
   }
 
     @Query( ()=> Reclamo, {name:"reclamoPorId"})
@@ -44,12 +44,12 @@ export class ReclamoResolver {
         return this.reclamoService.findOneById( id );
     }
 
-    /* @Query( ()=> [Reclamo], {name:"ReclamosPorCoincidencia"})
+    @Query( ()=> [Reclamo], {name:"ReclamosPorCoincidencia"})
     findBy(
         @Args ("text", {type: ()=> String }) text: string)
         {
             return this.reclamoService.findBy( text );
-        } */
+        }
 
     @Mutation(()=> Reclamo, {name: 'createReclamo'})
     async createReclamo(

@@ -25,27 +25,37 @@ export const SEED_USERS = [
 export const SEED_RECLAMOS = [
     {
         title: 'No prende',
-        detail: 'Fallo a los 3 dias',
+        purchaseDate: '2023-05-13',
+        purchaseId: 5976,
+        productCode: 'jduw6',
         problem: 'Tengo sueño',
     },
     {
         title: 'No funciona',
-        detail: 'Fallo a los 5 dias',
+        purchaseDate: '2023-05-13',
+        purchaseId: 2351,
+        productCode: 'h76dg',
         problem: 'Tengo hambre',
     },
     {
         title: 'Demoran',
-        detail: 'Espera de 5 horas',
+        purchaseDate : '2023-05-13',
+        purchaseId: 3097,
+        productCode: 'nhdyw63',
         problem: 'Tengo cosas que hacer',
     },
     {
         title: 'Me hablo mal',
-        detail: 'Mal educada',
+        purchaseDate: '2023-05-13',
+        purchaseId: 2465,
+        productCode: 'jsjfb76',
         problem: 'chau',
     },
     {
         title: 'Demoras',
-        detail: 'Falto a los 3 dias',
+        purchaseDate: '2023-05-13',
+        purchaseId: 4287,
+        productCode: 'dh47gs',
         problem: 'Tengo sueño',
     }
 ]

@@ -1,8 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { take } from 'rxjs';
 import { ValidRoles } from 'src/auth/enums/valid-roles.enum';
+import { PaginationArgs } from 'src/common/dto/args/pagination.args';
 import { User } from 'src/users/entities/user.entity';
-import { Repository } from 'typeorm';
+import { ILike, Like, Repository } from 'typeorm';
 import { createReclamoInput } from './dto/create.reclamo-input';
 import { updateReclamoInput } from './dto/update.reclamo-input';
 import { Reclamo } from './entity/reclamo.entity';
@@ -16,28 +18,22 @@ export class ReclamoService {
     ) {}
 
     async create( createReclamoInput: createReclamoInput, user: User ): Promise<Reclamo> {
-
-        const newReclamo = this.reclamosRepository.create({ ...createReclamoInput, user })
-        return await this.reclamosRepository.save( newReclamo )
+        const newReclamo = {...createReclamoInput, detail: `${createReclamoInput.purchaseId},${createReclamoInput.productCode},${createReclamoInput.purchaseDate}`, user}
+        const createdReclamo = this.reclamosRepository.create( newReclamo )
+        return await this.reclamosRepository.save( createdReclamo )
     }
 
     //Todos los reclamos 
-    /* async findAll(): Promise<Reclamo[]> {
 
-        return this.reclamosRepository.find();
-    } */
-
-    /* async findAll(): Promise<Reclamo[]> {
-
-        return this.reclamosRepository.find();
-    } */
-
-    async findAll( roles: ValidRoles[]): Promise<Reclamo[]> { //-------------------------FIND ALL
-        if ( roles.length === 0) return this.reclamosRepository.find();
-    
-    
-        return this.reclamosRepository.createQueryBuilder()
-        .getMany();
+    async findAll( roles: ValidRoles[], paginationArgs: PaginationArgs): Promise<Reclamo[]> { //-------------------------FIND ALL
+        
+        const { limit , offset } = paginationArgs;
+        console.log(roles)
+  
+        return this.reclamosRepository.find({
+            take: limit,
+            skip: offset,
+        });
       }
  
     //Un solo reclamo buscado por id
@@ -51,20 +47,16 @@ export class ReclamoService {
     }
 
     //Los reclamos que contengan el texto indicado en el titulo o problema
-/*     async findBy(text: string): Promise<Reclamo[]> {
+    async findBy(text: string): Promise<Reclamo[]> {
 
-        const reclamos = [];
+        const reclamo = await this.reclamosRepository.find({ where: {
+            title: ILike(`%${text}%`)
+        }});
 
-        this.reclamosRepository.forEach((reclamo) => {
-            if (reclamo.titulo.search(text) != -1 || reclamo.problema.search(text) != -1 ) {
-                reclamos.push(reclamo);
-            }
-        })
+        if ( !reclamo ) throw new NotFoundException(`No se encontraron reclamos con ese texto`);
 
-        if ( reclamos.length === 0 ) throw new NotFoundException(`No se encontraron reclamos con ese texto`);
-
-        return reclamos;
-    } */
+        return reclamo;
+    }
 
 
     async update(id: number, updateReclamoInput: updateReclamoInput ): Promise<Reclamo> {

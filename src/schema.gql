@@ -27,9 +27,10 @@ type AuthResponse {
 }
 
 type Query {
-  reclamos(roles: [ValidRoles!] = []): [Reclamo!]!
+  reclamos(roles: [ValidRoles!] = [], offset: Int = 0, limit: Int = 5): [Reclamo!]!
   reclamoPorId(id: Float!): Reclamo!
-  users(roles: [ValidRoles!] = []): [User!]!
+  ReclamosPorCoincidencia(text: String!): [Reclamo!]!
+  users(roles: [ValidRoles!] = [], offset: Int = 0, limit: Int = 5): [User!]!
   user(id: ID!): User!
   revalite: AuthResponse!
 }
@@ -55,7 +56,9 @@ type Mutation {
 
 input createReclamoInput {
   title: String!
-  detail: String!
+  purchaseDate: String!
+  purchaseId: Float!
+  productCode: String!
   problem: String!
 }
 
