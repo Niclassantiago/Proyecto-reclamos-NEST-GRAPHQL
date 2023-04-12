@@ -14,23 +14,23 @@ export class updateReclamoInput {
     @IsNotEmpty()
     @IsOptional()
     @MaxLength(20)
-    titulo?: string;
+    title?: string;
 
     @Field( ()=> String, {nullable: true})
     @IsString()
     @IsNotEmpty()
     @IsOptional()
-    detalle?: string;
+    detail?: string;
 
     @Field( ()=> String, {nullable: true})
     @IsString()
     @IsNotEmpty()
     @IsOptional()
     @MaxLength(50)
-    problema?: string;
+    problem?: string;
 
     @Field( ()=> Boolean, {nullable: true})
     @IsOptional()
     @IsBoolean()
-    resuelto?: boolean;
+    isActive?: boolean;
 }

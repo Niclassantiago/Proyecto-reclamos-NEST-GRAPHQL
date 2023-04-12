@@ -2,53 +2,78 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Reclamo {
-  id: Float!
-  titulo: String!
-  detalle: String!
-  problema: String!
-  resuelto: Boolean!
+type User {
+  id: ID!
+  fullName: String!
+  roles: [String!]!
+  isActive: String!
+  email: String!
+  lastUpdateBy: User
+  reclamos: [Reclamo!]!
 }
 
-type User {
-  id: String!
-  name: String!
+type Reclamo {
+  id: Float!
+  title: String!
+  detail: String!
+  problem: String!
+  isActive: Boolean!
+  user: User!
+}
+
+type AuthResponse {
+  token: String!
+  user: User!
 }
 
 type Query {
-  reclamos: [Reclamo!]!
-  reclamo(id: Float!): Reclamo!
-  users: [User!]!
-  user(id: Int!): User!
+  reclamos(roles: [ValidRoles!] = []): [Reclamo!]!
+  reclamoPorId(id: Float!): Reclamo!
+  users(roles: [ValidRoles!] = []): [User!]!
+  user(id: ID!): User!
+  revalite: AuthResponse!
+}
+
+enum ValidRoles {
+  admin
+  user
+  superUser
 }
 
 type Mutation {
   createReclamo(createReclamoInput: createReclamoInput!): Reclamo!
   updateReclamo(updateReclamoInput: updateReclamoInput!): Reclamo!
   deleteReclamo(id: Int!): Reclamo!
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
+  blockUser(id: ID!): User!
+  activeUser(id: ID!): User!
+  signup(signupInput: SignupInput!): AuthResponse!
+  login(loginInput: LoginInput!): AuthResponse!
+
+  """Ejecuta la construccion de la base de datos"""
+  executeSeed: Boolean!
 }
 
 input createReclamoInput {
-  titulo: String!
-  detalle: String!
-  problema: String!
+  title: String!
+  detail: String!
+  problem: String!
 }
 
 input updateReclamoInput {
   id: Float!
-  titulo: String
-  detalle: String
-  problema: String
-  resuelto: Boolean
+  title: String
+  detail: String
+  problem: String
+  isActive: Boolean
 }
 
-input CreateUserInput {
-  id: ID!
+input SignupInput {
+  email: String!
+  fullName: String!
+  password: String!
 }
 
-input UpdateUserInput {
-  id: ID!
+input LoginInput {
+  email: String!
+  password: String!
 }

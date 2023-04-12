@@ -26,7 +26,9 @@ yarn start:dev
 ```
 localhost:3000/graphql
 ```
+8. Ejecutar la "Mutacion" executeSeed para llenar la base de datos con informacion.
 
-## Stack usado
-* MongoDB
-* Nest
+9. Las credenciales del usuario ADMIN son:
+mail: "niclas@gmail.com"
+password: "123456"
+

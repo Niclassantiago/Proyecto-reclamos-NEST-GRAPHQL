@@ -11,6 +11,10 @@ import { ReclamoService } from './reclamo.service';
   ],
   imports: [
     TypeOrmModule.forFeature([ Reclamo ])
+  ],
+  exports: [
+    ReclamoService,
+    TypeOrmModule
   ]
 })
 export class ReclamoModule {}

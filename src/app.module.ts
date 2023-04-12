@@ -7,6 +7,8 @@ import { ReclamoModule } from './reclamo/reclamo.module';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
+import { SeedModule } from './seed/seed.module';
 
 
 @Module({
@@ -20,7 +22,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }), 
-    ReclamoModule, UsersModule,
+    ReclamoModule, UsersModule, AuthModule, SeedModule,
 
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -31,7 +33,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       database: process.env.DB_NAME,
       synchronize: true,
       autoLoadEntities: true,
-    })
+    }),
+
 
   ],
   controllers: [],

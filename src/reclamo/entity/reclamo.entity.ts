@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/users/entities/user.entity";
+import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity({ name: 'reclamos' })
@@ -12,20 +13,24 @@ export class Reclamo {
 
     @Field( ()=> String)
     @Column()
-    titulo: string;
+    title: string;
 
     @Column()
     @Field( ()=> String)
-    detalle: string;
+    detail: string;
 
     @Column()
     @Field( ()=> String)
-    problema: string;
+    problem: string;
 
     @Column()
     @Field( ()=> Boolean)
-    resuelto: boolean = false;
+    isActive: boolean = true;
 
+    @ManyToOne( ()=> User, (user)=> user.reclamos, { nullable: false} )
+    @Index('userId-index')
+    @Field(()=> User)
+    user: User;
 }
 
 //TODO Agregar decorador a "detalle" y convertirlo en objeto ?...

@@ -1,5 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ValidRoles } from 'src/auth/enums/valid-roles.enum';
+import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { createReclamoInput } from './dto/create.reclamo-input';
 import { updateReclamoInput } from './dto/update.reclamo-input';
@@ -13,21 +15,34 @@ export class ReclamoService {
         private readonly reclamosRepository: Repository<Reclamo>,
     ) {}
 
-    async create( createReclamoInput: createReclamoInput ): Promise<Reclamo> {
+    async create( createReclamoInput: createReclamoInput, user: User ): Promise<Reclamo> {
 
-        const newReclamo = this.reclamosRepository.create( createReclamoInput )
+        const newReclamo = this.reclamosRepository.create({ ...createReclamoInput, user })
         return await this.reclamosRepository.save( newReclamo )
     }
 
     //Todos los reclamos 
-    async findAll(): Promise<Reclamo[]> {
-        /* if ( this.reclamosRepository.find() === 0 ) throw new NotFoundException(`No existen reclamos`);
-        return this.reclamos; */
+    /* async findAll(): Promise<Reclamo[]> {
+
         return this.reclamosRepository.find();
-    }
+    } */
+
+    /* async findAll(): Promise<Reclamo[]> {
+
+        return this.reclamosRepository.find();
+    } */
+
+    async findAll( roles: ValidRoles[]): Promise<Reclamo[]> { //-------------------------FIND ALL
+        if ( roles.length === 0) return this.reclamosRepository.find();
+    
+    
+        return this.reclamosRepository.createQueryBuilder()
+        .getMany();
+      }
  
     //Un solo reclamo buscado por id
-    async findOne(id: number): Promise<Reclamo> {
+    async findOneById(id: number): Promise<Reclamo> {
+        
         const reclamo = await this.reclamosRepository.findOneBy ({ id });
 
         if ( !reclamo ) throw new NotFoundException(`El reclamo con id: ${id} no existe`);
@@ -36,7 +51,7 @@ export class ReclamoService {
     }
 
     //Los reclamos que contengan el texto indicado en el titulo o problema
-    /* async findBy(text: string): Promise<Reclamo[]> {
+/*     async findBy(text: string): Promise<Reclamo[]> {
 
         const reclamos = [];
 
@@ -53,7 +68,7 @@ export class ReclamoService {
 
 
     async update(id: number, updateReclamoInput: updateReclamoInput ): Promise<Reclamo> {
-        const {titulo, problema, detalle, resuelto} = updateReclamoInput;
+        const {title, problem, detail, isActive} = updateReclamoInput;
 
         const reclamoToUpdate = await this.reclamosRepository.preload( updateReclamoInput )
 
@@ -62,7 +77,7 @@ export class ReclamoService {
     }
 
     async delete( id: number): Promise<Reclamo> {
-        const reclamo = await this.findOne( id )
+        const reclamo = await this.findOneById( id )
 
         await this.reclamosRepository.remove(reclamo);
 
